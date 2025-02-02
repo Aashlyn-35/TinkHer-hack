@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Support</title>
+    <link rel="stylesheet" href="styles.css">
+    <script defer src="chatbot.js"></script> <!-- Chatbot Script -->
+</head>
+<body>
+
+<div class="container">
+    <div class="dashboard-box">
+        <h2>Customer Support</h2>
+        <p>If you need help, contact us through the following methods:</p>
+
+        <ul class="support-info">
+            <li><strong>Email:</strong> support@lostandfound.com</li>
+            <li><strong>Phone:</strong> +1 (123) 456-7890</li>
+            <li><strong>Live Chat:</strong> Available from 9 AM - 6 PM</li>
+        </ul>
+
+        <h3>Submit a Support Request</h3>
+        <form id="support-form">
+            <div class="textbox">
+                <label for="name">Your Name</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+
+            <div class="textbox">
+                <label for="email">Your Email</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+
+            <div class="textbox">
+                <label for="message">How can we help you?</label>
+                <textarea id="message" name="message" required></textarea>
+            </div>
+
+            <button type="submit">Submit Request</button>
+        </form>
+
+        <a href="dashboard.html"><button>Back to Dashboard</button></a>
+    </div>
+</div>
+
+<!-- Chatbot Button -->
+<button class="chatbot-toggle" onclick="toggleChat()">💬 Chat with Us</button>
+
+<!-- Chatbot Interface -->
+<div class="chatbot-box" id="chatbot-box">
+    <div class="chat-header">
+        <h4>Support Chat</h4>
+        <button onclick="toggleChat()">✖</button>
+    </div>
+    <div class="chat-body" id="chat-body">
+        <p class="bot-message">Hello! How can I assist you today?</p>
+    </div>
+    <div class="chat-footer">
+        <input type="text" id="chat-input" placeholder="Type a message..." onkeypress="handleChat(event)">
+        <button onclick="sendMessage()">Send</button>
+    </div>
+</div>
+
+<script>
+// Handle Support Form Submission
+document.getElementById("support-form").addEventListener("submit", (event) => {
+    event.preventDefault();
+    alert("Your request has been submitted. We will get back to you shortly!");
+    setTimeout(() => {
+        window.location.href = "dashboard.html";
+    }, 1000);
+});
+
+// Chatbot Functionality
+function toggleChat() {
+    const chatBox = document.getElementById("chatbot-box");
+    chatBox.style.display = (chatBox.style.display === "block") ? "none" : "block";
+}
+
+function sendMessage() {
+    const inputField = document.getElementById("chat-input");
+    const message = inputField.value.trim();
+    if (message === "") return;
+
+    // Append user message
+    appendMessage("You", message);
+
+    // Simple AI Response
+    setTimeout(() => {
+        const botResponse = getBotResponse(message);
+        appendMessage("Bot", botResponse);
+    }, 500);
+
+    inputField.value = "";
+}
+
+function appendMessage(sender, text) {
+    const chatBody = document.getElementById("chat-body");
+    const messageElement = document.createElement("p");
+    messageElement.classList.add(sender === "Bot" ? "bot-message" : "user-message");
+    messageElement.textContent = `${sender}: ${text}`;
+    chatBody.appendChild(messageElement);
+    chatBody.scrollTop = chatBody.scrollHeight;
+}
+
+// Basic Responses
+function getBotResponse(input) {
+    input = input.toLowerCase();
+    if (input.includes("lost item")) return "You can report a lost item on the dashboard.";
+    if (input.includes("found item")) return "You can submit a found item report on the website.";
+    return "I'm here to help! Please provide more details.";
+}
+
+// Handle Enter Key
+function handleChat(event) {
+    if (event.key === "Enter") sendMessage();
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit Found Item</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Link to the common CSS -->
+</head>
+<body>
+
+<div class="container">
+    <div class="dashboard-box">
+        <h2>Submit a Found Item</h2>
+        <form id="found-item-form" enctype="multipart/form-data">
+            <div class="textbox">
+                <label for="item-description">Item Description</label>
+                <textarea id="item-description" name="item-description" required></textarea>
+            </div>
+
+            <div class="textbox">
+                <label for="item-photo">Upload Photo</label>
+                <input type="file" id="item-photo" name="item-photo" accept="image/*">
+            </div>
+
+            <button type="submit">Submit Found Item</button>
+        </form>
+    </div>
+</div>
+
+<script>
+document.getElementById("found-item-form").addEventListener("submit", async (event) => {
+    event.preventDefault();
+    
+    // Simulating form submission
+    alert("Submitted Successfully!");
+    
+    setTimeout(() => {
+        window.location.href = "dashboard.html";
+    }, 1000); // Delay for 1 second before redirecting
+});
+</script>
+
+</body>
+</html>

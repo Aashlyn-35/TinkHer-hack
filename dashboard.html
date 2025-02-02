@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="dashboard-box">
+            <!-- Welcome Message -->
+            <div class="header">
+                <h1>Welcome, John Doe</h1>
+                <div class="icons">
+                    <a href="profile.html"><i class="fas fa-user-circle"></i></a>
+                    <a href="settings.html"><i class="fas fa-cogs"></i></a>
+                </div>
+            </div>
+
+            <!-- Quick Stats -->
+            <div class="quick-stats">
+                <div class="stat-box">
+                    <h3>Total Lost Items</h3>
+                    <p>120</p>
+                </div>
+                <div class="stat-box">
+                    <h3>Items Recovered</h3>
+                    <p>45</p>
+                </div>
+                <div class="stat-box">
+                    <h3>Pending Reports</h3>
+                    <p>12</p>
+                </div>
+            </div>
+
+            <!-- Search & Filter -->
+            <div class="search-filter">
+                <input type="text" class="search-bar" placeholder="Search items..." id="search-bar">
+                <select class="status-filter" id="status-filter">
+                    <option value="all">Region</option>
+                    <option value="Central Park">Central Park</option>
+                    <option value="Library">Library</option>
+                    <option value="Downtown">Downtown</option>
+                </select>
+            </div>
+
+            <!-- Lost Items Table -->
+            <h2>Lost Items</h2>
+            <table id="lost-items-table">
+                <thead>
+                    <tr>
+                        <th>Item Name</th>
+                        <th>Landmark</th>
+                        <th>Lost Date</th>
+                        <th>Lost Time</th>
+                        <th>Action</th> <!-- New column for Mark as Found button -->
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="lost">
+                        <td>Wallet</td>
+                        <td>Central Park</td>
+                        <td>02-01-2025</td>
+                        <td>14:30</td>
+                        <td><a href="founditems.html" class="btn">Mark as Found</a></td> <!-- Link to found item page -->
+                    </tr>
+                    <tr class="recovered">
+                        <td>Phone</td>
+                        <td>Library</td>
+                        <td>02-02-2025</td>
+                        <td>16:00</td>
+                        <td><a href="founditems.html" class="btn">Mark as Found</a></td> <!-- Link to found item page -->
+                    </tr>
+                    <tr class="lost">
+                        <td>Bag</td>
+                        <td>Downtown</td>
+                        <td>02-03-2025</td>
+                        <td>12:30</td>
+                        <td><a href="founditems.html" class="btn">Mark as Found</a></td> <!-- Link to found item page -->
+                    </tr>
+                    <!-- Add more items as necessary -->
+                </tbody>
+            </table>
+
+            <!-- Notifications and Messages -->
+            <div class="notifications">
+                <h3>Notifications</h3>
+                <ul>
+                    <li><i class="fas fa-bell"></i> New report received for "Wallet"!</li>
+                    <li><i class="fas fa-bell"></i> "Phone" has been marked as found.</li>
+                </ul>
+            </div>
+
+            <!-- Customer Support -->
+            <div class="customer-support">
+                <h3>Need Help?</h3>
+                <a href="support.html"><button>Contact Support</button></a>
+            </div>
+
+            <!-- Report Lost Item Button -->
+            <a href="report.html"><button>Report Lost Item</button></a>
+
+            <!-- Logout Button -->
+            <a href="index.html"><button>Logout</button></a>
+        </div>
+    </div>
+
+    <!-- JavaScript: Place at the end of the body to ensure the DOM is loaded -->
+    <script>
+        // Sample data (items will be represented as rows with 'lost' or 'recovered' classes)
+        const items = [
+            { name: "Wallet", region: "Central Park", date: "02-01-2025", time: "14:30", status: "lost" },
+            { name: "Phone", region: "Library", date: "02-02-2025", time: "16:00", status: "recovered" },
+            { name: "Bag", region: "Downtown", date: "02-03-2025", time: "12:30", status: "lost" },
+        ];
+
+        // Function to filter items by status and search term
+        function filterItems() {
+            const statusFilter = document.getElementById("status-filter").value;
+            const searchQuery = document.getElementById("search-bar").value.toLowerCase();
+
+            // Get table body and clear existing rows
+            const tableBody = document.querySelector("#lost-items-table tbody");
+            tableBody.innerHTML = "";
+
+            // Filter the items based on selected status and search query
+            const filteredItems = items.filter(item => {
+                const matchesStatus = statusFilter === "all" || item.status === statusFilter;
+                const matchesSearch = item.name.toLowerCase().includes(searchQuery) || item.region.toLowerCase().includes(searchQuery);
+                return matchesStatus && matchesSearch;
+            });
+
+            // Populate the table with filtered items
+            filteredItems.forEach(item => {
+                const row = document.createElement("tr");
+                row.classList.add(item.status);  // Add the 'lost' or 'recovered' class for each row
+
+                row.innerHTML = `
+                    <td>${item.name}</td>
+                    <td>${item.region}</td>
+                    <td>${item.date}</td>
+                    <td>${item.time}</td>
+                    <td><a href="founditems.html?item=${item.name.toLowerCase()}" class="btn">Mark as Found</a></td> <!-- Mark as Found Link -->
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Event listeners for search and status filter
+        document.getElementById("search-bar").addEventListener("input", filterItems);
+        document.getElementById("status-filter").addEventListener("change", filterItems);
+
+        // Initial call to populate table with all items on page load
+        window.onload = filterItems;
+    </script>
+</body>
+</html>
